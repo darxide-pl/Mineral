@@ -163,8 +163,8 @@ At the outset, I should point out that the config declared in `AppView`, will be
 Config will be overriden key by key, so if You wanna override `css` option (looking at the previous example), You should overwrite that option this way: 
 ```php 
 <?php $this->Minifier->override([
-	'css' => FALSE,
-	/// 'script' option is still true
+    'css' => FALSE,
+    /// 'script' option is still true
 ]) ?>
 ```
 
@@ -195,7 +195,9 @@ We can enable minifier back, by using `enable()` method.
 Inside templates You can use bunch of methods to minify parts of views.  
 
 1. process 
+
 `string process(string $content, array $options)` 
+
 Handy method to minify content
 `$content` - block, element or just any string 
 `$options` array of options the same as described in sections `1. Minifying entire output` and `2. Callbacks` 
@@ -206,7 +208,7 @@ Handy method to minify content
 
 // minifying block 
 <?= $this->Mineral->process($this->fetch('content'), [
-	'css' => TRUE
+    'css' => TRUE
 ]) ?>
 
 // minifying any string
@@ -216,7 +218,9 @@ foo
 ```
 
 2. minify
+
 `string minify(string $content)`
+
 minify method offers standard minification (HTML to "one line" form)
 ```php 
 // minifying element
@@ -231,7 +235,9 @@ foo
 </div>') ?>
 ```
 3. inlineCssPruning
+
 `string inlineCssPruning(string $content)`
+
 Remove `<div style="color:red">inline css</div>` from string 
 
 ```php 
@@ -246,7 +252,9 @@ Remove `<div style="color:red">inline css</div>` from string
 ```
 
 4. inlineStylePruning 
+
 `string inlineStylePruning(string $content)` 
+
 Remove style tags from output
 
 ```php 
@@ -260,7 +268,9 @@ Remove style tags from output
 <?= $this->Mineral->inlineStylePruning('<style> * {color:red}</style>') ?>
 ```
 5. inlineScriptPruning
+
 `string inlineScriptPruning(string $content)`
+
 Remove script blocks from output 
 
 ```php 
@@ -302,7 +312,7 @@ class AppView extends View
         $this->Mineral->disable();
     }
 
-	// our custom method
+    // our custom method
     public function minifyMe($page) {
         
         if($page->minify) {
