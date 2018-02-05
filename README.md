@@ -22,7 +22,7 @@ With Mineral You can:
 # 1. Minifying entire output
 ## Basic usage
 First scenario: we wanna minify every output in our app. 
-Load MinifierHelper inside `/src/View/AppView.php` 
+Load MineralHelper inside `/src/View/AppView.php` 
 ```php
 <?php
 namespace App\View;
@@ -162,14 +162,14 @@ class AppView extends View
 At the outset, I should point out that the config declared in `AppView`, will be default config for all other manipulations, but we can override config by calling `override($config)` somewhere in our app (helper, template, element).
 Config will be overriden key by key, so if You wanna override `css` option (looking at the previous example), You should overwrite that option this way: 
 ```php 
-<?php $this->Minifier->override([
+<?php $this->Mineral->override([
     'css' => FALSE,
     /// 'script' option is still true
 ]) ?>
 ```
 
 ## Disabling automatic minifying
-By default, Mineral uses cake's `afterLayout()` event to manipulating output. If we wanna minify only parts of views, we should disable that behaviour, by calling `MinifierHelper::disable()` method: 
+By default, Mineral uses cake's `afterLayout()` event to manipulating output. If we wanna minify only parts of views, we should disable that behaviour, by calling `MineralHelper::disable()` method: 
 
 ```php 
 <?php<div
@@ -199,7 +199,9 @@ Inside templates You can use bunch of methods to minify parts of views.
 `string process(string $content, array $options)` 
 
 Handy method to minify content
+
 `$content` - block, element or just any string 
+
 `$options` array of options the same as described in sections `1. Minifying entire output` and `2. Callbacks` 
 
 ```php 
