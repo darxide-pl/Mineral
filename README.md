@@ -1,3 +1,4 @@
+
 # Mineral plugin for CakePHP3
 
 ## Output minification plugin 
@@ -8,6 +9,10 @@ With Mineral You can:
 4. Use events for custom output processing
 
 *depending on the options selected in the minifier - by default plugin will omit blocks of script
+
+Webstites, which use this plugin: 
+https://www.ecrf.biz.pl/
+
 ## Requirements 
 1. CakePHP 3+
 2. PHP 7.0+
