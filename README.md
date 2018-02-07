@@ -6,7 +6,8 @@ With Mineral You can:
 1. Minify all of HTML output to "one line" form * 
 2. Minify only selected elements/blocks/pages/templates
 3. Cleaning output from: inline css, inline style blocks, inline scripts blocks
-4. Use events for custom output processing
+4. Cleaning messed up font properties from WYSIWYG editors (vertical rhythm, justifying)
+5. Use events for custom output processing
 
 *depending on the options selected in the minifier - by default plugin will omit blocks of script
 
@@ -99,6 +100,27 @@ class AppView extends View
     }
 }
 ```
+
+## Messed up fonts
+Everybody who meets `WYSIWYG` editors and saw, what customers can do inside this kind of functionality, knows how people can accidentally (or not break typographic standards. This option will precisely remove declarations like: `font-family`, `line-height`, `letter-spacing`, `text-align:justify` and will parse `margin` and `padding` declarations to remove vertical values. 
+
+```php 
+<?php
+
+namespace App\View;
+use Cake\View\View;
+
+class AppView extends View
+{
+    public function initialize() {
+
+        $this->loadHelper('Mineral.Mineral', [
+            'fonts' => TRUE
+        ]);
+    }
+}
+```
+
 
 # 2 Callbacks
 ## beforePruning 
@@ -337,3 +359,4 @@ And in your template You can call Your method:
 <?php $this->minifyMe($page) ?>
 </head>
 ```
+

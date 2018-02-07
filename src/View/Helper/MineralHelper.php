@@ -76,6 +76,10 @@ class MineralHelper extends Helper
 	        $content = $this->inlineScriptPruning($content);
 	    }
 
+	    if($config['fonts']) {
+	    	$content = $this->cleanFonts($content);
+	    }
+
         if(is_callable($config['afterPruning'])) {
 	        $content = $this->afterPruning($content, $config['afterPruning']);
 	    }
@@ -176,6 +180,45 @@ class MineralHelper extends Helper
 	public function inlineScriptPruning (string $content) :string {
 
     	return preg_replace('/(<script[^>]*>)(.*?)(<\/script>)/is', '$1$3', $content);
+        return $content;
+	}
+
+	/**
+	 *	The problem: users which edit page content using WYSIWYG editors can messed uo with fonts - font-families, vertical rhythm
+	 *	The goal: clean every css properties which potentially malform fonts and break up vertical rhythm (line height), parse paddings and margins to remove vertical values and leave horizontal values, remove text justifying
+	 *	Pruning should not be too strong - by removing "height" we can accidentally deprive them of the possibility to change image height
+	 *	@param string $content 
+	 *	@return string 
+	 */
+	public function cleanFonts (string $content) :string {
+		
+		$content = preg_replace('/(?:font-family|line-height|padding-top|padding-bottom|margin-top|margin-bottom|letter-spacing)[\ ]*:[ ]*[^;]+(;|")/', '\1', $content);
+
+        $content = preg_replace_callback(
+            '/(?:(padding|margin|text-align))[\ ]*:([ ]*[^;]+)(;|")/U', 
+            function($matches) {
+
+                list(,$prop,$value,$close) = $matches;
+
+                if(trim($prop) == 'text-align' && trim($value) == 'justify') {
+                    return "text-align:left{$close}";
+                }
+
+                if(trim($prop) == 'text-align') {
+                    return "text-align:{$value}{$close}";
+                }                
+
+                $values = explode(' ', trim($value));
+                $left = 0;
+                $right = 0;
+
+                $right = ($count = count($values)) === 4 ? $values[1] : $values[0];
+                $left = $count === 3 ? $values[1] : $values[$count -1];
+
+                return "{$prop}-left:{$left};{$prop}-right:{$right}{$close}";
+            }, 
+            $content);	
+
         return $content;
 	}
 
